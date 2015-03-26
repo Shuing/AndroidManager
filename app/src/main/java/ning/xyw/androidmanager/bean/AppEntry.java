@@ -19,6 +19,18 @@ import ning.xyw.androidmanager.util.Util;
  */
 public class AppEntry {
 
+    private final AppListLoader mLoader;
+    private final PackageInfo mPackageInfo;
+    private final ApplicationInfo mInfo;
+    private final File mApkFile;
+    private String mLabel;
+    private Drawable mIcon;
+    private boolean mMounted;
+    private long firstInstallTime;
+    private long lastUpdateTime;
+    private String mPackageName;
+    private boolean systemed;
+
     public AppEntry(AppListLoader loader, PackageInfo packageInfo) {
         mLoader = loader;
         mPackageInfo = packageInfo;
@@ -108,15 +120,5 @@ public class AppEntry {
         }
     }
 
-    private final AppListLoader mLoader;
-    private final PackageInfo mPackageInfo;
-    private final ApplicationInfo mInfo;
-    private final File mApkFile;
-    private String mLabel;
-    private Drawable mIcon;
-    private boolean mMounted;
-    private long firstInstallTime;
-    private long lastUpdateTime;
-    private String mPackageName;
-    private boolean systemed;
+
 }
