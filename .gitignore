@@ -1,8 +1,6 @@
-.idea
-*.bat
 .gradle
-build
-app/build
-local.properties
-gradlew
-gradle
+/local.properties
+/.idea/workspace.xml
+/.idea/libraries
+.DS_Store
+/build
