@@ -16,7 +16,7 @@ public class App extends Application {
     public void onCreate() {
         super.onCreate();
         mContext = this;
-        FloatViewService.startService();
+//        FloatViewService.startService();
     }
 
     @Override
