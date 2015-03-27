@@ -194,4 +194,5 @@ public class AppListLoader extends AsyncTaskLoader<List<AppEntry>> {
         // For a simple List<> there is nothing to do. For something
         // like a Cursor, we would close it here.
     }
+
 }

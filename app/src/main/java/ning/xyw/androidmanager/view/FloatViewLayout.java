@@ -15,13 +15,8 @@ import ning.xyw.androidmanager.R;
 import ning.xyw.androidmanager.service.FloatViewService;
 import ning.xyw.androidmanager.util.L;
 
-/**
- * 录屏计时控件
- *
- * @author gogozhao
- */
 public class FloatViewLayout extends RelativeLayout implements OnClickListener, View.OnLongClickListener {
-    private final static String TAG = "RecordingFloatView";
+    private final static String TAG = "FloatViewLayout";
     private float mTouchX;
     private float mTouchY;
     private float x;

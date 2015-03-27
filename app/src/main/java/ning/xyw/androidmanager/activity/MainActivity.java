@@ -19,6 +19,8 @@ import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.GridView;
 import android.widget.Toast;
 
+import com.fichardu.viewshot.GlobalScreenshot;
+
 import java.util.List;
 
 import ning.xyw.androidmanager.R;
@@ -43,6 +45,7 @@ public class MainActivity extends ActionBarActivity implements
         setContentView(R.layout.main);
         mToolbar = (Toolbar) findViewById(R.id.main_toolbar);
         setSupportActionBar(mToolbar);
+        mToolbar.setVisibility(View.GONE);
         mPm = getPackageManager();
         mGridView = (GridView) findViewById(R.id.main_grid);
         mGridView.setSelector(new ColorDrawable(Color.TRANSPARENT));
@@ -81,7 +84,7 @@ public class MainActivity extends ActionBarActivity implements
         try {
             startActivity(mPm.getLaunchIntentForPackage(item.getmPackageName()));
         } catch (Exception e) {
-            Toast.makeText(this, "启动 " + item.getLabel() + " 失败", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, String.format(getString(R.string.launch_failed), item.getLabel()), Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -95,6 +98,16 @@ public class MainActivity extends ActionBarActivity implements
         } catch (Exception e) {
         }
         return false;
+    }
+
+    private void screenshot() {
+        GlobalScreenshot screenshot = new GlobalScreenshot(this);
+        screenshot.takeScreenshot(getWindow().getDecorView(), new Runnable() {
+            @Override
+            public void run() {
+
+            }
+        }, true, true);
     }
 
 }

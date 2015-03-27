@@ -2,5 +2,6 @@
 <resources>
 
     <string name="app_name">大总管</string>
+    <string name="launch_failed">打开%s失败</string>
 
 </resources>
