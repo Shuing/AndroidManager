@@ -30,6 +30,7 @@ public class AppEntry {
     private long lastUpdateTime;
     private String mPackageName;
     private boolean systemed;
+    private boolean enabled;
 
     public AppEntry(AppListLoader loader, PackageInfo packageInfo) {
         mLoader = loader;
@@ -40,6 +41,7 @@ public class AppEntry {
         lastUpdateTime = packageInfo.lastUpdateTime;
         mPackageName = packageInfo.packageName;
         systemed = Util.getInstance().isSystemApp(mInfo);
+        enabled = mInfo.enabled;
     }
 
     public ApplicationInfo getApplicationInfo() {
@@ -76,6 +78,10 @@ public class AppEntry {
      */
     public boolean isSystemed() {
         return systemed;
+    }
+
+    public boolean isEnabled() {
+        return enabled;
     }
 
     public Drawable getIcon() {

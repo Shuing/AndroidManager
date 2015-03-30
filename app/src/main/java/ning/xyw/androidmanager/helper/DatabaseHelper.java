@@ -40,9 +40,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    public Cursor select() {
+    public Cursor query(String packagename) {
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.query(TABLE_NAME, null, null, null, null, null, " _id desc");
+        String where = FIELD_PACKAGENAME + "=?";
+        String[] whereValue = {packagename};
+        Cursor cursor = db.query(TABLE_NAME, null, where, whereValue, null, null, " _id desc");
         return cursor;
     }
 

@@ -1,4 +1,3 @@
-
 package ning.xyw.androidmanager.adapter;
 
 import android.content.Context;
@@ -44,12 +43,12 @@ public class AppListAdapter extends ArrayAdapter<AppEntry> {
             viewHolder = new ViewHolder();
             convertView = mInflater.inflate(R.layout.item, null);
             viewHolder.itemIcon = (ImageView) convertView.findViewById(R.id.item_icon);
+            viewHolder.itemLockIcon = (ImageView) convertView.findViewById(R.id.item_icon_enabled);
             viewHolder.itemName = (TextView) convertView.findViewById(R.id.item_name);
             convertView.setTag(viewHolder);
         } else {
             viewHolder = (ViewHolder) convertView.getTag();
         }
-
         AppEntry item = getItem(position);
         viewHolder.itemIcon.setImageDrawable(item.getIcon());
         viewHolder.itemName.setText(item.getLabel());
@@ -58,13 +57,17 @@ public class AppListAdapter extends ArrayAdapter<AppEntry> {
         } else {
             viewHolder.itemName.setTextColor(Color.WHITE);
         }
+        if (item.isEnabled()) {
+            viewHolder.itemLockIcon.setVisibility(View.INVISIBLE);
+        } else {
+            viewHolder.itemLockIcon.setVisibility(View.VISIBLE);
+        }
         return convertView;
     }
 
     class ViewHolder {
-        private ImageView icon;
-        private TextView appname;
         private ImageView itemIcon;
+        private ImageView itemLockIcon;
         private TextView itemName;
     }
 

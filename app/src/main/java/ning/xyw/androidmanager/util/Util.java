@@ -36,6 +36,13 @@ public class Util {
         return context.getPackageManager().getInstalledApplications(0).size();
     }
 
+//    public boolean isEnabled(){
+//        ApplicationInfo ai =
+//                getActivity().getPackageManager().getApplicationInfo("your_package",0);
+//
+//        boolean appStatus = ai.enabled;
+//    }
+
     public boolean isSystemed(PackageInfo packageInfo) {
         return packageInfo.applicationInfo.flags == ApplicationInfo.FLAG_SYSTEM;
     }
