@@ -5,6 +5,9 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.os.AsyncTask;
+
+import java.util.concurrent.ThreadPoolExecutor;
 
 import ning.xyw.androidmanager.App;
 import ning.xyw.androidmanager.bean.AppBean;
@@ -73,6 +76,5 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         cv.put(FIELD_PACKAGENAME, appBean.getPackagename());
         db.update(TABLE_NAME, cv, where, whereValue);
     }
-
 
 }

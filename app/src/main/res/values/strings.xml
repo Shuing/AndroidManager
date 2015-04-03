@@ -2,5 +2,6 @@
 <resources>
 
     <string name="app_name">android manager</string>
-    <string name="launch_failed">launch %s failed</string>
+    <string name="failed_launch">launch %s failed</string>
+    <string name="failed">failed</string>
 </resources>

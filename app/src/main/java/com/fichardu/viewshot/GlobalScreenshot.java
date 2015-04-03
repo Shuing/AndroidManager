@@ -22,6 +22,7 @@ import android.animation.AnimatorSet;
 import android.animation.ValueAnimator;
 import android.animation.ValueAnimator.AnimatorUpdateListener;
 import android.annotation.TargetApi;
+import android.app.Activity;
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
@@ -30,6 +31,7 @@ import android.graphics.PointF;
 import android.media.MediaActionSound;
 import android.net.Uri;
 import android.os.Build;
+import android.support.annotation.NonNull;
 import android.util.DisplayMetrics;
 import android.view.Display;
 import android.view.LayoutInflater;
@@ -134,6 +136,15 @@ public class GlobalScreenshot {
         mCameraSound.load(MediaActionSound.SHUTTER_CLICK);
     }
 
+    public static void screenshot(@NonNull Activity activity) {
+        GlobalScreenshot screenshot = new GlobalScreenshot(activity);
+        screenshot.takeScreenshot(activity.getWindow().getDecorView(), new Runnable() {
+            @Override
+            public void run() {
+
+            }
+        }, true, true);
+    }
 
     /**
      * Takes a screenshot of the current display and shows an animation.

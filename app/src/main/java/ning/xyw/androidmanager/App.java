@@ -18,10 +18,7 @@ public class App extends Application {
     public void onCreate() {
         super.onCreate();
         mContext = this;
-        Cursor cursor = new DatabaseHelper(this).query("com.terry");
-        int count = cursor.getCount();
-        L.d("AAAAAAA    " + count);
-//        FloatViewService.startService();
+        FloatViewService.startService();
     }
 
     @Override

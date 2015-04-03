@@ -7,6 +7,7 @@ package ning.xyw.androidmanager.activity;
 import android.app.LoaderManager;
 import android.content.Loader;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -19,14 +20,14 @@ import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.GridView;
 import android.widget.Toast;
 
-import com.fichardu.viewshot.GlobalScreenshot;
-
 import java.util.List;
 
 import ning.xyw.androidmanager.R;
 import ning.xyw.androidmanager.adapter.AppListAdapter;
 import ning.xyw.androidmanager.bean.AppEntry;
 import ning.xyw.androidmanager.helper.AppListLoader;
+import ning.xyw.androidmanager.helper.DatabaseHelper;
+import ning.xyw.androidmanager.util.L;
 import ning.xyw.androidmanager.util.Util;
 
 /**
@@ -54,6 +55,7 @@ public class MainActivity extends ActionBarActivity implements
         mGridView.setOnItemClickListener(this);
         mGridView.setOnItemLongClickListener(this);
         getLoaderManager().initLoader(0, null, this);
+        test();
     }
 
     @Override
@@ -84,7 +86,7 @@ public class MainActivity extends ActionBarActivity implements
         try {
             startActivity(mPm.getLaunchIntentForPackage(item.getmPackageName()));
         } catch (Exception e) {
-            Toast.makeText(this, String.format(getString(R.string.launch_failed), item.getLabel()), Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, String.format(getString(R.string.failed_launch), item.getLabel()), Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -96,18 +98,14 @@ public class MainActivity extends ActionBarActivity implements
                     item.getmPackageName());
             return true;
         } catch (Exception e) {
+            Toast.makeText(this, getString(R.string.failed), Toast.LENGTH_SHORT).show();
+            return false;
         }
-        return false;
     }
 
-    private void screenshot() {
-        GlobalScreenshot screenshot = new GlobalScreenshot(this);
-        screenshot.takeScreenshot(getWindow().getDecorView(), new Runnable() {
-            @Override
-            public void run() {
-
-            }
-        }, true, true);
+    private void test() {
+        Cursor cursor = new DatabaseHelper(this).query("com.hjwang.hospitalandroid");
+        L.d("AAAAA   " + cursor.getCount());
     }
 
 }

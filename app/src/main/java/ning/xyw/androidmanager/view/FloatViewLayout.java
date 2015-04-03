@@ -8,6 +8,10 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.WindowManager;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.RelativeLayout;
 
 import ning.xyw.androidmanager.App;
@@ -26,7 +30,10 @@ public class FloatViewLayout extends RelativeLayout implements OnClickListener, 
     private long mDownTime;
     private RelativeLayout mLayout;
     private View view;
-
+    private EditText mEditText;
+    private Button mMoveBtn;
+    private Button mGoBtn;
+    private WebView mWebView;
     private WindowManager mWindowManager;
     /**
      * 此wmParams为获取的全局变量，用以保存悬浮窗口的属性
@@ -38,9 +45,83 @@ public class FloatViewLayout extends RelativeLayout implements OnClickListener, 
         super(context);
         mWindowManager = windowManager;
         wmParams = params;
-        view = inflate(getContext(), R.layout.floatview_recording, null);
+        view = inflate(getContext(), R.layout.floatview, null);
         mLayout = (RelativeLayout) view
-                .findViewById(R.id.floatview_recording_layout);
+                .findViewById(R.id.floatview_layout);
+        mEditText = (EditText) view.findViewById(R.id.fv_et);
+        mMoveBtn = (Button) view.findViewById(R.id.fv_btn_move);
+        mMoveBtn.setOnTouchListener(new OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                // 获取到状态栏的高度
+                Rect frame = new Rect();
+                getWindowVisibleDisplayFrame(frame);
+                int statusBarHeight = frame.top;
+                // 获取相对屏幕的坐标，即以屏幕左上角为原点
+                x = event.getRawX();
+                y = event.getRawY() - statusBarHeight;
+                int action = event.getAction() & MotionEvent.ACTION_MASK;//多点触控
+                switch (event.getAction()) {
+                    case MotionEvent.ACTION_DOWN: // 捕获手指触摸按下动作
+                        // 获取相对View的坐标，即以此View左上角为原点
+                        mDownTime = System.currentTimeMillis();
+                        mTouchX = event.getX();
+                        mTouchY = event.getY();
+                        mStartX = x;
+                        mStartY = y;
+                        break;
+                    case MotionEvent.ACTION_MOVE:
+                        // 捕获手指触摸移动动作
+                        updateViewPosition();
+                        break;
+                    case MotionEvent.ACTION_UP:
+                        updateViewPosition();
+                        mTouchX = mTouchY = 0;
+                        boolean movedEnough = Math.abs(x - mStartX) > 5 || Math.abs(y - mStartY) > 5;//单一方向移动距离超过5,视为拖动事件。
+                        boolean lastEnough = System.currentTimeMillis() - mDownTime > 300;//按下时间超过300ms，视为长按操作。
+                        mDownTime = 0;
+                        if (!movedEnough) {
+                            if (lastEnough) {
+                                onLongClick(FloatViewLayout.this);
+                            } else {
+                                onClick(FloatViewLayout.this);
+                            }
+                        }
+                        break;
+                    case MotionEvent.ACTION_CANCEL:
+                        mTouchX = mTouchY = 0;
+                        mDownTime = 0;
+                        break;
+                }
+                return true;
+            }
+        });
+        mGoBtn = (Button) view.findViewById(R.id.fv_btn_go);
+
+        mWebView = (WebView) view.findViewById(R.id.fv_webview);
+        mWebView.loadUrl("http://m.baidu.com");
+        mWebView.getSettings().setJavaScriptEnabled(true);
+        mWebView.setWebViewClient(new WebViewClient() {
+            @Override
+            public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                view.loadUrl(url);
+                return true;
+            }
+        });
+
+        mGoBtn.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mWebView.loadUrl(mEditText.getText().toString());
+            }
+        });
+        mGoBtn.setOnLongClickListener(new OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                FloatViewService.stopService();
+                return true;
+            }
+        });
         addView(view);
         setOnClickListener(this);
         setOnLongClickListener(this);
