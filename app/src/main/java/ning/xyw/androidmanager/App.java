@@ -2,11 +2,9 @@ package ning.xyw.androidmanager;
 
 import android.app.Application;
 import android.content.Context;
-import android.database.Cursor;
+import android.os.Debug;
 
-import ning.xyw.androidmanager.helper.DatabaseHelper;
 import ning.xyw.androidmanager.service.FloatViewService;
-import ning.xyw.androidmanager.util.L;
 
 /**
  * Created by ning on 15-2-3.
@@ -18,18 +16,15 @@ public class App extends Application {
     public void onCreate() {
         super.onCreate();
         mContext = this;
-        FloatViewService.startService();
     }
 
     @Override
     public void onTerminate() {
-        FloatViewService.stopService();
         super.onTerminate();
     }
 
     @Override
     public void onLowMemory() {
-        FloatViewService.stopService();
         super.onLowMemory();
     }
 

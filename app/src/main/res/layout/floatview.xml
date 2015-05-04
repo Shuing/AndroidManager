@@ -1,38 +1,6 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:id="@+id/floatview_layout"
-                android:layout_width="match_parent"
-                android:layout_height="400dp"
-                android:background="@null">
-
-    <LinearLayout
-        android:id="@+id/fv_layout_top"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <Button
-            android:id="@+id/fv_btn_move"
-            android:text="MV"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-
-        <EditText
-            android:id="@+id/fv_et"
-            android:layout_weight="1"
-            android:layout_width="match_parent"
-            android:hint="URL"
-            android:layout_height="wrap_content"/>
-
-        <Button
-            android:id="@+id/fv_btn_go"
-            android:text="GO"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-    </LinearLayout>
-
-    <WebView
-        android:id="@+id/fv_webview"
-        android:layout_below="@id/fv_layout_top"
-        android:layout_width="match_parent"
-        android:layout_height="200dp"/>
-
-</RelativeLayout>
+<ImageView xmlns:android="http://schemas.android.com/apk/res/android"
+           android:id="@+id/floatview_iv"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:src="@drawable/phiz01"
+           android:background="@null"/>

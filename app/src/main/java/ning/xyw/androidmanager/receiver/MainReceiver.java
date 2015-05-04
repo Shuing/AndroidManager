@@ -9,7 +9,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
+import android.net.ConnectivityManager;
 import android.text.TextUtils;
+import android.widget.Toast;
 
 import ning.xyw.androidmanager.App;
 import ning.xyw.androidmanager.bean.AppBean;
@@ -54,6 +56,10 @@ public class MainReceiver extends BroadcastReceiver {
             case RECEIVER_START_APPOPS://点击通知栏
                 L.d("点击通知栏");
                 Util.startAppOps(context);
+                break;
+            case ConnectivityManager.CONNECTIVITY_ACTION://网络连接改变
+                new NotificationHelper().showAutoCancelNotification(App.getContext(), "网络连接改变了");
+                Toast.makeText(context, "网络连接改变了", Toast.LENGTH_LONG).show();
                 break;
         }
     }

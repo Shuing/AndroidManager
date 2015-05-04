@@ -4,13 +4,17 @@
 
 package ning.xyw.androidmanager.util;
 
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.net.Uri;
 import android.os.Build;
+import android.os.Looper;
+import android.preference.PreferenceActivity;
 import android.provider.Settings;
+import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -157,4 +161,33 @@ public class Util {
         }
     }
 
+    /**
+     * 权限不足
+     *
+     * @param context
+     * @return
+     */
+    public static boolean startSubsetting(Context context) {
+        L.d("startSubsetting");
+        try {
+            Intent intent = Intent.makeRestartActivityTask(
+                    new ComponentName("com.android.settings", "com.android.settings.SubSettings"));
+            intent.putExtra(PreferenceActivity.EXTRA_SHOW_FRAGMENT, "com.android.settings.deviceinfo.Memory");
+            intent.putExtra(PreferenceActivity.EXTRA_SHOW_FRAGMENT_TITLE, "title");
+            intent.putExtra(PreferenceActivity.EXTRA_NO_HEADERS, true);
+            context.startActivity(intent);
+            return true;
+        } catch (Exception e) {
+            L.d("startSubsetting failed " + e);
+            return false;
+        }
+    }
+
+    public static void t(String msg) {
+        if (Looper.myLooper() == Looper.getMainLooper()) {
+            Toast.makeText(App.getContext(), msg, Toast.LENGTH_SHORT).show();
+        } else {
+            L.d("Toast msg : " + msg);
+        }
+    }
 }

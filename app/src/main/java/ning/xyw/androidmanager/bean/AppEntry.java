@@ -126,5 +126,7 @@ public class AppEntry {
         }
     }
 
-
+    public void setmLabel(String mLabel) {
+        this.mLabel = mLabel;
+    }
 }

@@ -18,12 +18,10 @@ import ning.xyw.androidmanager.bean.AppEntry;
 
 public class AppListAdapter extends ArrayAdapter<AppEntry> {
     private final LayoutInflater mInflater;
-    private ExecutorService mPool;
 
     public AppListAdapter(Context context) {
         super(context, android.R.layout.simple_list_item_2);
         mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        mPool = Executors.newFixedThreadPool(10);
     }
 
     public void setData(List<AppEntry> data) {

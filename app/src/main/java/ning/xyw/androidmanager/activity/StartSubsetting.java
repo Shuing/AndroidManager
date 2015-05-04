@@ -1,19 +1,17 @@
 package ning.xyw.androidmanager.activity;
 
 import android.os.Bundle;
-
-import static ning.xyw.androidmanager.util.Util.startAppOps;
+import static ning.xyw.androidmanager.util.Util.*;
 
 /**
- * Created by ning on 15-2-5.
+ * Created by ning on 15-4-14.
  */
-public class StartAppOpsActivity extends BaseActivity {
+public class StartSubsetting extends BaseActivity{
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        boolean result = startAppOps(this);
+        boolean result = startSubsetting(this);
         finish();
     }
-
 }

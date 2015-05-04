@@ -4,4 +4,6 @@
     <string name="app_name">android manager</string>
     <string name="failed_launch">launch %s failed</string>
     <string name="failed">failed</string>
+    <string name="open">open</string>
+    <string name="close">close</string>
 </resources>
