@@ -85,7 +85,6 @@ public class AppEntry {
         } else {
             return mIcon;
         }
-
         return mLoader.getContext().getResources().getDrawable(
                 android.R.drawable.sym_def_app_icon);
     }

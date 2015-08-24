@@ -38,7 +38,7 @@ public class MainReceiver extends BroadcastReceiver {
                 break;
             case Intent.ACTION_PACKAGE_ADDED://接收安装广播
                 L.d("安装了:" + intent.getDataString());
-                new NotificationHelper().showAutoCancelNotification(App.getContext(), "安装了:" + intent.getDataString());
+//                new NotificationHelper().showAutoCancelNotification(App.getContext(), "安装了:" + intent.getDataString());
                 break;
             case Intent.ACTION_PACKAGE_REMOVED://接收卸载广播
                 String packageName = intent.getDataString();

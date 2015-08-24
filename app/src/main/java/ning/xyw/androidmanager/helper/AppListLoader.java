@@ -2,10 +2,12 @@ package ning.xyw.androidmanager.helper;
 
 import android.content.AsyncTaskLoader;
 import android.content.Context;
-import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.text.Collator;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -47,6 +49,49 @@ public class AppListLoader extends AsyncTaskLoader<List<AppEntry>> {
     }
 
     /**
+     * @param pm
+     * @param flags
+     * @return
+     * @see http://stackoverflow.com/questions/13235793/transactiontoolargeeception-when-trying-to-get-a-list-of-applications-installed/30062632#30062632
+     */
+    public static List<PackageInfo> getInstalledPackages(PackageManager pm, int flags) {
+        //if it's Android 5.1, no need to do any special work
+//        if(Build.VERSION.SDK_INT>= Build.VERSION_CODES.LOLLIPOP_MR1)
+//            return pm.getInstalledPackages(flags);
+        //else, protect against exception, and use a fallback if needed:
+        try {
+            return pm.getInstalledPackages(flags);
+        } catch (Exception ignored) {
+            //we don't care why it didn't succeed. We'll do it using an alternative way instead
+        }
+        // use fallback:
+        Process process;
+        List<PackageInfo> result = new ArrayList<>();
+        BufferedReader bufferedReader = null;
+        try {
+            process = Runtime.getRuntime().exec("pm list packages");
+            bufferedReader = new BufferedReader(new InputStreamReader(process.getInputStream()));
+            String line;
+            while ((line = bufferedReader.readLine()) != null) {
+                final String packageName = line.substring(line.indexOf(':') + 1);
+                final PackageInfo packageInfo = pm.getPackageInfo(packageName, flags);
+                result.add(packageInfo);
+            }
+            process.waitFor();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (bufferedReader != null)
+                try {
+                    bufferedReader.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+        }
+        return result;
+    }
+
+    /**
      * This is where the bulk of our work is done. This function is called in a
      * background thread and should generate a new set of data to be published
      * by the loader.
@@ -54,21 +99,21 @@ public class AppListLoader extends AsyncTaskLoader<List<AppEntry>> {
     @Override
     public List<AppEntry> loadInBackground() {
         // Retrieve all known applications.
-        List<ApplicationInfo> apps = mPm.getInstalledApplications(
-                PackageManager.GET_UNINSTALLED_PACKAGES |
-                        PackageManager.GET_DISABLED_COMPONENTS);
-        List<PackageInfo> apps2 = mPm.getInstalledPackages(0);
-        if (apps == null) {
-            apps = new ArrayList<ApplicationInfo>();
-        }
+//        List<ApplicationInfo> apps = mPm.getInstalledApplications(
+//                PackageManager.GET_UNINSTALLED_PACKAGES |
+//                        PackageManager.GET_DISABLED_COMPONENTS);
+        List<PackageInfo> apps2 = getInstalledPackages(mPm, 0);
+//        if (apps == null) {
+//            apps = new ArrayList<ApplicationInfo>();
+//        }
         if (apps2 == null) {
-            apps2 = new ArrayList<PackageInfo>();
+            apps2 = new ArrayList<>();
         }
 
         final Context context = getContext();
 
         // Create corresponding array of entries and load their labels.
-        List<AppEntry> entries = new ArrayList<AppEntry>(apps2.size());
+        List<AppEntry> entries = new ArrayList<>(apps2.size());
         for (int i = 0; i < apps2.size(); i++) {
             AppEntry entry = new AppEntry(this, apps2.get(i));
             entry.loadLabel(context);
